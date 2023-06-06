@@ -32,6 +32,8 @@ def callback():
 def handle_message(event):
     # 收到使用者的訊息
     user_message = event.message.text
+    if user_message == 1:
+        user_message=11
     
     # 回覆相同的訊息
     line_bot_api.reply_message(
