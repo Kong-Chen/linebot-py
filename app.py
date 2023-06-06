@@ -16,6 +16,7 @@ handler = WebhookHandler(os.environ['CHANNEL_SECRET'])
 
 @app.route("/callback", methods=['POST'])
 def callback():
+
     # 取得 request headers 中的 X-Line-Signature 屬性
     signature = request.headers['X-Line-Signature']
     
