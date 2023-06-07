@@ -57,6 +57,8 @@ def handle_message(event):
     cursor = connection.cursor()
     cursor.execute("INSERT INTO word (word_desc) VALUES ('"+ user_message +"')")
     connection.commit()
+    cursor.close()
+    connection.close()
     # rows = cursor.fetchall()
 
 if __name__ == "__main__":
