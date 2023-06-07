@@ -55,8 +55,8 @@ def handle_message(event):
     )
     # cursor = connection.cursor()
     # cursor.execute("CREATE TABLE word (word_desc VARCHAR(200))")
-    # cursor1 = connection.cursor()
-    # cursor1.execute("INSERT INTO word (word_desc) VALUES ('"+ user_message +"')")
+    cursor1 = connection.cursor()
+    cursor1.execute("INSERT INTO word (word_desc) VALUES ('"+ user_message +"')")
     connection.commit()
     # rows = cursor.fetchall()
 
