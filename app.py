@@ -5,15 +5,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import os
 import psycopg2
 
-# 建立連接
-connection = psycopg2.connect(
-    host="dpg-ci01rn33cv20nhqqkd50-a.oregon-postgres.render.com",
-    port="5432",
-    database="linebot_trm4",
-    user="kong",
-    password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh",
-    sslmode="require"
-)
+
 
 app = Flask(__name__)
 
@@ -53,6 +45,15 @@ def handle_message(event):
     )
     # cursor = connection.cursor()
     # cursor.execute("CREATE TABLE word (word_desc VARCHAR(200))")
+    # 建立連接
+    connection = psycopg2.connect(
+        host="dpg-ci01rn33cv20nhqqkd50-a.oregon-postgres.render.com",
+        port="5432",
+        database="linebot_trm4",
+        user="kong",
+        password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh",
+        sslmode="require"
+    )
     cursor = connection.cursor()
     cursor.execute("INSERT INTO word (word_desc) VALUES ('"+ user_message +"')")
     connection.commit()
