@@ -37,7 +37,10 @@ def handle_message(event):
     user_message = event.message.text
     if user_message == '1':
         user_message=11
-    
+    else:
+        result = cursor.execute("INSERT INTO word (word_desc) VALUES ('"+ user_message +"')")
+        print(result)
+
     # 回覆相同的訊息
     line_bot_api.reply_message(
         event.reply_token,
