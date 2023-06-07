@@ -15,8 +15,6 @@ connection = psycopg2.connect(
     sslmode="require"
 )
 
-
-
 app = Flask(__name__)
 
 # 設置你的 LINE Bot 的 Channel Access Token 和 Channel Secret
