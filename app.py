@@ -60,7 +60,6 @@ def handle_message(event):
     connection.commit()
     # rows = cursor.fetchall()
 
-
 if __name__ == "__main__":
     # 在本地運行時才啟動伺服器
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
