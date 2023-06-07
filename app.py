@@ -47,8 +47,11 @@ def handle_message(event):
         password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh",
         sslmode="require"
     )
+    
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO word (word_desc) VALUES ('"+ user_message +"')")
+    insert_query = "INSERT INTO word (word_desc) VALUES (%s)"
+    record_to_insert = (user_message)
+    cursor.execute(insert_query, record_to_insert)
     connection.commit()
     cursor.close()
     connection.close()
