@@ -7,11 +7,12 @@ import psycopg2
 
 # 建立連接
 connection = psycopg2.connect(
-    host="dpg-ci01rn33cv20nhqqkd50-a",
+    host="dpg-ci01rn33cv20nhqqkd50-a.oregon-postgres.render.com",
     port="5432",
     database="linebot_trm4",
     user="kong",
-    password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh"
+    password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh",
+    sslmode="require"
 )
 
 
@@ -52,10 +53,10 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text=user_message)
     )
-    cursor = connection.cursor()
-    cursor.execute("CREATE TABLE word (word_desc VARCHAR(200))")
-    cursor1 = connection.cursor()
-    cursor1.execute("INSERT INTO word (word_desc) VALUES ('"+ user_message +"')")
+    # cursor = connection.cursor()
+    # cursor.execute("CREATE TABLE word (word_desc VARCHAR(200))")
+    # cursor1 = connection.cursor()
+    # cursor1.execute("INSERT INTO word (word_desc) VALUES ('"+ user_message +"')")
     connection.commit()
     # rows = cursor.fetchall()
 
