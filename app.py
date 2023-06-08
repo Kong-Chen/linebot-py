@@ -5,8 +5,6 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import os
 import psycopg2
 
-
-
 app = Flask(__name__)
 
 # 設置你的 LINE Bot 的 Channel Access Token 和 Channel Secret
