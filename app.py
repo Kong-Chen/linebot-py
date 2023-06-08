@@ -56,6 +56,7 @@ def handle_message(event):
             sslmode="require"
         )
         cursor = connection.cursor()
+        aaa = connection.Error() 
         """
         cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
         connection.commit()
@@ -64,7 +65,7 @@ def handle_message(event):
         """
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="連線正確!!!!")
+            TextSendMessage(text=aaa)
         )
 
 
