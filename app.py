@@ -61,7 +61,7 @@ def handle_message(event):
     try:
  
         cursor = connection.cursor()     
-        cursor.execute("SELECT * FROM bot_user WHERE user_id = %s", (user_id,))
+        cursor.execute("SELECT * FROM bot_user WHERE line_id = %s", (user_id,))
         existing_user = cursor.fetchone()
 
         if existing_user:
