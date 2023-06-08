@@ -49,7 +49,7 @@ def handle_message(event):
             host="dpg-ci01rn33cv20nhqqkd50-a.oregon-postgres.render.com",
             port="5432",
             database="linebot_trm4",
-            user="kong1229",
+            user="kong",
             password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh"
         )
         
