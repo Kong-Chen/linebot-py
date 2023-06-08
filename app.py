@@ -4,6 +4,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import os
 import uuid
+from psycopg2.extensions import adapt, register_adapter
 import psycopg2
 
 app = Flask(__name__)
@@ -21,6 +22,11 @@ connection = psycopg2.connect(
         password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh"
     )
 
+# 註冊 UUID 型別的適應器
+def adapt_uuid(uuid):
+    return adapt(str(uuid))
+
+register_adapter(uuid.UUID, adapt_uuid)
 
 @app.route("/callback", methods=['POST'])
 def callback():
