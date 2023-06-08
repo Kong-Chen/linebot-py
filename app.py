@@ -37,6 +37,12 @@ def handle_message(event):
     user_message = event.message.text
     if user_message == '1':
         user_message=11
+    
+    # 回覆相同的訊息
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=user_message)
+    )
 
     #建立連接
     connection = psycopg2.connect(
@@ -49,19 +55,10 @@ def handle_message(event):
     )
     
     cursor = connection.cursor()
-    # cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
-    cursor.execute("SELECT * FROM word")
+    cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
     connection.commit()
     cursor.close()
     connection.close()
-    rows = cursor.fetchone()
-
-
-    # 回覆相同的訊息
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=rows)
-    )
 
 
 if __name__ == "__main__":
