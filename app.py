@@ -45,6 +45,8 @@ def handle_message(event):
     #)
     try:
         #建立連接
+        user_message='111wq4tc3q4tv34vt'
+        """
         connection = psycopg2.connect(
             host="dpg-ci01rn33cv20nhqqkd50-a.oregon-postgres.render.com",
             port="5432",
@@ -53,16 +55,18 @@ def handle_message(event):
             password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh",
             sslmode="require"
         )
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
+        connection.commit()
+        cursor.close()
+        connection.close()
+
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text="連線正確!!!!")
         )
-        # user_message='111wq4tc3q4tv34vt'
-        # cursor = connection.cursor()
-        # cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
-        # connection.commit()
-        # cursor.close()
-        # connection.close()
+        """
+
     except psycopg2.Error as e:
         print("資料庫錯誤:", e)
         line_bot_api.reply_message(
