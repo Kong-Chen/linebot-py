@@ -9,18 +9,12 @@ connection = psycopg2.connect(
     password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh",
     sslmode="require"
 )
-
-# 建立游標
-cursor = connection.cursor()
-
-# 執行 SQL 查詢
-user_message='11112142r'
+user_message='1wrwretwrg'
 cursor = connection.cursor()
 cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
 connection.commit()
 cursor.close()
 connection.close()
-# rows = cursor.fetchall()
 
 
 
