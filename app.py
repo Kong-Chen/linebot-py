@@ -3,6 +3,7 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import os
+import uuid
 import psycopg2
 
 app = Flask(__name__)
@@ -42,18 +43,17 @@ def callback():
 def handle_message(event):
     # 收到使用者的訊息
     user_message = event.message.text
-    if user_message == '1':
-        user_message=11
-    
-    # 回覆相同的訊息
-    #line_bot_api.reply_message(
-    #    event.reply_token,
-    #    TextSendMessage(text=user_message)
-    #)
+    user_id = event.source.user_id
+    user_nickname = None
+    if event.source.type == 'user':
+        profile = line_bot_api.get_profile(user_id)
+        user_nickname = profile.display_name
+
+
     try:
    
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
+        cursor.execute("INSERT INTO bot_user (user_id,user_name,line_id) VALUES (%s,%s,%s)", (uuid.uuid4(),user_nickname,user_id))
         connection.commit()
         cursor.close()
         connection.close()
