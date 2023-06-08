@@ -65,7 +65,7 @@ def handle_message(event):
         """
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=aaa)
+            TextSendMessage(text="資料庫連線正確喔!!!!")
         )
 
 
@@ -73,7 +73,7 @@ def handle_message(event):
         print("資料庫錯誤:", e)
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="資料庫錯誤!!!!")
+            TextSendMessage(text=e)
         )
 
 
