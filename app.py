@@ -44,16 +44,14 @@ def handle_message(event):
     #)
     try:
         #建立連接
+        user_message='111wq4tc3q4tv34vt'
         connection = psycopg2.connect(
             host="dpg-ci01rn33cv20nhqqkd50-a.oregon-postgres.render.com",
             port="5432",
             database="linebot_trm4",
             user="kong1229",
-            password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh",
-            sslmode="require"
+            password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh"
         )
-        user_message='111wq4tc3q4tv34vt'
-        
         
         """
         cursor = connection.cursor()
