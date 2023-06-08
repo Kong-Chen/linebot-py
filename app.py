@@ -51,26 +51,32 @@ def handle_message(event):
     
     # 收到使用者的訊息
     user_message = event.message.text
-    user_id = event.source.user_id
+    user_line_id = event.source.user_id
+    user_id = None
     user_nickname = None
     if event.source.type == 'user':
-        profile = line_bot_api.get_profile(user_id)
+        profile = line_bot_api.get_profile(user_line_id)
         user_nickname = profile.display_name
 
 
     try:
  
         cursor = connection.cursor()     
-        cursor.execute("SELECT * FROM bot_user WHERE line_id = %s", (user_id,))
+        cursor.execute("SELECT user_id FROM bot_user WHERE line_id = %s", (user_line_id,))
         existing_user = cursor.fetchone()
-
-        if existing_user:
-            # 如果存在相同的 user_id，則進行更新操作
-            cursor.execute("UPDATE bot_user SET user_name = %s WHERE user_id = %s", (user_nickname, user_id))
-        else:
-            # 如果不存在相同的 user_id，則進行插入操作
-            cursor.execute("INSERT INTO bot_user (user_id, user_name, line_id) VALUES (%s, %s, %s)", (uuid.uuid4(), user_nickname, user_id))
         
+        #判斷是否存在：不存在新增／存在則更新暱稱
+        if existing_user:
+            cursor.execute("UPDATE bot_user SET user_name = %s WHERE line_id = %s", (user_nickname, user_line_id))
+            user_id = existing_user
+        else:
+            new_id = uuid.uuid4()
+            cursor.execute("INSERT INTO bot_user (user_id, user_name, line_id) VALUES (%s, %s, %s)", (new_id, user_nickname, user_line_id))
+            user_id = new_id 
+
+        #新增對話
+        cursor.execute("INSERT INTO bot_chat (user_id, chat_rank,chat_message,chat_time) VALUES (%s, %s, %s, %s)", (user_id,1,user_message,12345))
+
         connection.commit()
         cursor.close()
 
