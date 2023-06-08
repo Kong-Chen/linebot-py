@@ -63,7 +63,7 @@ def handle_message(event):
         print("資料庫錯誤:", e)
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="資料庫錯誤，無法寫入資料")
+            TextSendMessage(text=e)
         )
 
 
