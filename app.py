@@ -77,7 +77,15 @@ def handle_message(event):
             user_id = new_id 
 
         #新增對話
-        cursor.execute("INSERT INTO bot_chat (user_id, chat_rank,chat_message,chat_time) VALUES (%s, %s, %s, %s)", (user_id,1,user_message,timestamp))
+        cursor.execute("SELECT MAX(chat_rank) FROM bot_chat WHERE user_id = %s", (user_id,))
+        result = cursor.fetchone()
+        if result and result[0]:
+            chat_rank = result[0] + 1
+        else:
+            chat_rank = 1
+        cursor.execute("INSERT INTO bot_chat (user_id, chat_rank, chat_message, chat_time) VALUES (%s, %s, %s, %s)", (user_id, chat_rank, user_message, timestamp)) 
+
+        
 
         connection.commit()
         cursor.close()
