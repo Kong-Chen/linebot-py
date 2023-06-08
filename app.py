@@ -6,6 +6,7 @@ import os
 import uuid
 from psycopg2.extensions import adapt, register_adapter
 import psycopg2
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -50,6 +51,7 @@ def handle_message(event):
     )
     
     # 收到使用者的訊息
+    timestamp = datetime.now()
     user_message = event.message.text
     user_line_id = event.source.user_id
     user_id = None
@@ -75,7 +77,7 @@ def handle_message(event):
             user_id = new_id 
 
         #新增對話
-        cursor.execute("INSERT INTO bot_chat (user_id, chat_rank,chat_message,chat_time) VALUES (%s, %s, %s, %s)", (user_id,1,user_message,12345))
+        cursor.execute("INSERT INTO bot_chat (user_id, chat_rank,chat_message,chat_time) VALUES (%s, %s, %s, %s)", (user_id,1,user_message,timestamp))
 
         connection.commit()
         cursor.close()
