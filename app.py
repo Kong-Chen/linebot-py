@@ -25,7 +25,6 @@ connection = psycopg2.connect(
 # 註冊 UUID 型別的適應器
 def adapt_uuid(uuid):
     return adapt(str(uuid))
-
 register_adapter(uuid.UUID, adapt_uuid)
 
 @app.route("/callback", methods=['POST'])
