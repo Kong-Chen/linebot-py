@@ -54,6 +54,7 @@ def handle_message(event):
         )
         user_message='111wq4tc3q4tv34vt'
         
+        
         """
         cursor = connection.cursor()
         cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
