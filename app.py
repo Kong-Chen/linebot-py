@@ -65,7 +65,6 @@ def handle_message(event):
             TextSendMessage(text="資料庫連線正確喔!!!!")
         )
 
-
     except psycopg2.Error as e:
         # print("資料庫錯誤:", e)
         line_bot_api.reply_message(
