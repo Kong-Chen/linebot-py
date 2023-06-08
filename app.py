@@ -39,10 +39,10 @@ def handle_message(event):
         user_message=11
     
     # 回覆相同的訊息
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=user_message)
-    )
+    #line_bot_api.reply_message(
+    #    event.reply_token,
+    #    TextSendMessage(text=user_message)
+    #)
     try:
         #建立連接
         connection = psycopg2.connect(
