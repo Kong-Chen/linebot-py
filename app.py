@@ -52,17 +52,16 @@ def handle_message(event):
             user="kong",
             password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh"
         )
-        
-        """
+    
         cursor = connection.cursor()
         cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
         connection.commit()
         cursor.close()
         connection.close()
-        """
+
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="資料庫連線正確喔!!!!")
+            TextSendMessage(text="正確寫入喔!!!!")
         )
 
     except psycopg2.Error as e:
