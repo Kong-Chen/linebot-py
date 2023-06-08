@@ -13,15 +13,11 @@ app = Flask(__name__)
 line_bot_api = LineBotApi(os.environ['LINE_CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['LINE_CHANNEL_SECRET'])
 
-#建立連接
-connection = psycopg2.connect(
-    host="dpg-ci01rn33cv20nhqqkd50-a.oregon-postgres.render.com",
-        port="5432",
-        database="linebot_trm4",
-        user="kong",
-        password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh"
-    )
 
+# 註冊 UUID 型別的適應器
+def adapt_uuid(uuid):
+    return adapt(str(uuid))
+register_adapter(uuid.UUID, adapt_uuid)
 
 
 @app.route("/callback", methods=['POST'])
@@ -43,6 +39,16 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    
+    # 建立連接 (修改)
+    connection = psycopg2.connect(
+        host="dpg-ci01rn33cv20nhqqkd50-a.oregon-postgres.render.com",
+        port="5432",
+        database="linebot_trm4",
+        user="kong",
+        password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh"
+    )
+    
     # 收到使用者的訊息
     user_message = event.message.text
     user_id = event.source.user_id
@@ -53,16 +59,11 @@ def handle_message(event):
 
 
     try:
-        # 註冊 UUID 型別的適應器
-        def adapt_uuid(uuid):
-            return adapt(str(uuid))
-        register_adapter(uuid.UUID, adapt_uuid)
-   
+ 
         cursor = connection.cursor()
         cursor.execute("INSERT INTO bot_user (user_id,user_name,line_id) VALUES (%s,%s,%s)", (uuid.uuid4(),user_nickname,user_id))
         connection.commit()
         cursor.close()
-        connection.close()
 
         line_bot_api.reply_message(
             event.reply_token,
@@ -76,6 +77,8 @@ def handle_message(event):
             TextSendMessage(text="資料庫錯誤啦!")
         )
 
+    finally:
+        connection.close()
 
 if __name__ == "__main__":
     # 在本地運行時才啟動伺服器
