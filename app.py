@@ -22,10 +22,7 @@ connection = psycopg2.connect(
         password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh"
     )
 
-# 註冊 UUID 型別的適應器
-def adapt_uuid(uuid):
-    return adapt(str(uuid))
-register_adapter(uuid.UUID, adapt_uuid)
+
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -56,6 +53,10 @@ def handle_message(event):
 
 
     try:
+        # 註冊 UUID 型別的適應器
+        def adapt_uuid(uuid):
+            return adapt(str(uuid))
+        register_adapter(uuid.UUID, adapt_uuid)
    
         cursor = connection.cursor()
         cursor.execute("INSERT INTO bot_user (user_id,user_name,line_id) VALUES (%s,%s,%s)", (uuid.uuid4(),user_nickname,user_id))
