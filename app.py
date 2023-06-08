@@ -60,8 +60,17 @@ def handle_message(event):
 
     try:
  
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO bot_user (user_id,user_name,line_id) VALUES (%s,%s,%s)", (uuid.uuid4(),user_nickname,user_id))
+        cursor = connection.cursor()     
+        cursor.execute("SELECT * FROM bot_user WHERE user_id = %s", (user_id,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            # 如果存在相同的 user_id，則進行更新操作
+            cursor.execute("UPDATE bot_user SET user_name = %s WHERE user_id = %s", (user_nickname, user_id))
+        else:
+            # 如果不存在相同的 user_id，則進行插入操作
+            cursor.execute("INSERT INTO bot_user (user_id, user_name, line_id) VALUES (%s, %s, %s)", (uuid.uuid4(), user_nickname, user_id))
+        
         connection.commit()
         cursor.close()
 
