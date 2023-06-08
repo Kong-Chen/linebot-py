@@ -92,7 +92,7 @@ def handle_message(event):
 
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="正確寫入喔!!!!")
+            TextSendMessage(text="正確寫入喔!!!!!!!!")
         )
 
     except psycopg2.Error as e:
