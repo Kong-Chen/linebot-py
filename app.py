@@ -56,7 +56,6 @@ def handle_message(event):
             sslmode="require"
         )
         cursor = connection.cursor()
-        aaa = connection.Error() 
         """
         cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
         connection.commit()
@@ -70,7 +69,7 @@ def handle_message(event):
 
 
     except psycopg2.Error as e:
-        print("資料庫錯誤:", e)
+        # print("資料庫錯誤:", e)
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=e)
