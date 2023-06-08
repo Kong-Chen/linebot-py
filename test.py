@@ -14,15 +14,17 @@ connection = psycopg2.connect(
 cursor = connection.cursor()
 
 # 執行 SQL 查詢
-cursor.execute("SELECT * FROM word")
+a='1111'
+cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (a,))
 
 # 取得查詢結果
-rows = cursor.fetchall()
+# rows = cursor.fetchall()
 
 # 關閉游標和連線
+connection.commit()
 cursor.close()
 connection.close()
 
 # 處理查詢結果
-for row in rows:
-    print(row)
+#for row in rows:
+#    print(row)
