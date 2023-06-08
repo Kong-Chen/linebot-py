@@ -37,7 +37,7 @@ def handle_message(event):
     user_message = event.message.text
     if user_message == '1':
         user_message=11
-  
+
     #建立連接
     connection = psycopg2.connect(
         host="dpg-ci01rn33cv20nhqqkd50-a.oregon-postgres.render.com",
@@ -49,20 +49,20 @@ def handle_message(event):
     )
     
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
+    # cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
+    cursor.execute("SELECT * FROM word")
     connection.commit()
     cursor.close()
     connection.close()
-    # rows = cursor.fetchall()
+    rows = cursor.fetchone()
 
 
     # 回覆相同的訊息
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=user_message)
+        TextSendMessage(text=rows)
     )
 
-    
 
 if __name__ == "__main__":
     # 在本地運行時才啟動伺服器
