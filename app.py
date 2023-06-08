@@ -60,12 +60,12 @@ def handle_message(event):
         connection.commit()
         cursor.close()
         connection.close()
-
+        """
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text="連線正確!!!!")
         )
-        """
+
 
     except psycopg2.Error as e:
         print("資料庫錯誤:", e)
