@@ -53,12 +53,16 @@ def handle_message(event):
             password="kmJreG7MV3OY8NYcVn9tNYHK3HhzCWBh",
             sslmode="require"
         )
-        user_message='111wq4tc3q4tv34vt'
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
-        connection.commit()
-        cursor.close()
-        connection.close()
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="連線正確!!!!")
+        )
+        # user_message='111wq4tc3q4tv34vt'
+        # cursor = connection.cursor()
+        # cursor.execute("INSERT INTO word (word_desc) VALUES (%s)", (user_message,))
+        # connection.commit()
+        # cursor.close()
+        # connection.close()
     except psycopg2.Error as e:
         print("資料庫錯誤:", e)
         line_bot_api.reply_message(
