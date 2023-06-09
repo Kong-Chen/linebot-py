@@ -121,10 +121,8 @@ def handle_message(event):
                 result_chat_all = "尚未讀取對話："+"\n"
                 for result_chat_row in result_chat_rows:
                     result_chat_all += result_chat_row[0]+"\n"
-                    cursor.execute("UPDATE bot_chat SET is_read=true WHERE user_id = %s AND chat_message = %s AND is_read=false " , (push_user_id,result_chat_row[0],))
-
-
-                #PUSH # 更新資料庫=1
+                    #PUSH # 更新資料庫=1
+                    #cursor.execute("UPDATE bot_chat SET is_read=true WHERE user_id = %s AND chat_message = %s AND is_read=false " , (push_user_id,result_chat_row[0],))
 
                 line_bot_api.reply_message(
                     event.reply_token,
