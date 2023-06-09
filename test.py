@@ -21,8 +21,8 @@ try:
         sslmode="require"
     )
     timestamp = datetime.now()
-    user_message='繼續'
-    keyword='繼續'
+    user_message='123'
+    keyword='123'
     user_line_id='1111111'
     user_nickname='測試'
     user_id='111'
@@ -41,9 +41,14 @@ try:
         new_id = uuid.uuid4()
         cursor.execute("INSERT INTO bot_user (user_id, user_name, line_id) VALUES (%s, %s, %s)", (new_id, user_nickname, user_line_id))
         user_id = new_id 
-
-        #新增對話
-    cursor.execute("INSERT INTO bot_chat (user_id, chat_rank,chat_message,chat_time) VALUES (%s, %s, %s, %s)", (user_id,1,user_message,timestamp))
+    cursor.execute("SELECT MAX(chat_rank) FROM bot_chat WHERE user_id = %s", (user_id,))
+    result = cursor.fetchone()
+    if result and result[0]:
+        chat_rank = result[0] + 1
+    else:
+        chat_rank = 1
+    #新增對話
+    cursor.execute("INSERT INTO bot_chat (user_id, chat_rank,chat_message,chat_time) VALUES (%s, %s, %s, %s)", (user_id,chat_rank,user_message,timestamp))
 
 
     ########
@@ -53,18 +58,21 @@ try:
     if result:
         cursor.execute("SELECT sub_user_id  FROM bot_user_relation WHERE main_user_id = %s AND action_key = %s" , (result,user_message,))
         result_user_id = cursor.fetchone()
-        #print("第二個" + result_user_id[0])  # Kong
         if result_user_id:
-            push_user_id = result_user_id
+            push_user_id = result_user_id[0]
+            keyword = user_message
+
         else:
             cursor.execute("SELECT main_user_id  FROM bot_user_relation WHERE sub_user_id  = %s AND action_key = %s", (result,user_message,))
             push_user_id = cursor.fetchone()
+            if result_user_id:
+                push_user_id = result_user_id[0]
+                keyword = user_message
         
         if push_user_id is not None and keyword is not None:
             #取出關係人對話  
             cursor.execute("SELECT chat_message  FROM bot_chat WHERE user_id = %s AND chat_message <> %s AND is_read=false Order by chat_rank" , (push_user_id,user_message,))
             result_chat_rows = cursor.fetchall()
-            result_chat_all = None
             result_chat_all = "尚未讀取對話："+"\n"
             for result_chat_row in result_chat_rows:
                 result_chat_all += result_chat_row[0]+"\n"
