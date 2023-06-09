@@ -145,6 +145,8 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text="你的訊息對話有收到喔!special_function")
         )
+        cursor.close()
+        connection.commit()
   
 
     except psycopg2.Error as e:
@@ -155,8 +157,7 @@ def handle_message(event):
         )
 
     finally:
-        connection.commit()
-        cursor.close()
+
         connection.close()
 
 if __name__ == "__main__":
