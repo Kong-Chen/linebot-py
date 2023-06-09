@@ -21,8 +21,8 @@ try:
         sslmode="require"
     )
     timestamp = datetime.now()
-    user_message='8888888888'
-    user_line_id='1111111'
+    user_message='繼續'
+    user_line_id='Ud91537b73f965b281b99f822c9e3387e'
     user_nickname='Kong'
     user_id='111'
     cursor = connection.cursor()
@@ -42,11 +42,27 @@ try:
         user_id = new_id 
 
         #新增對話
-    
     cursor.execute("INSERT INTO bot_chat (user_id, chat_rank,chat_message,chat_time) VALUES (%s, %s, %s, %s)", (user_id,1,user_message,timestamp))
 
 
-    
+    ########
+    cursor.execute("SELECT user_id  FROM bot_user WHERE line_id = %s", (user_line_id,))
+    result = cursor.fetchone()
+    print("第一個" + result[0])  # Kong
+    if result:
+        cursor.execute("SELECT sub_user_id  FROM bot_user_relation WHERE main_user_id = %s AND action_key = %s" , (result,user_message,))
+        result_user_id = cursor.fetchone()
+        print("第二個" + result_user_id[0])  # Kong
+        if result_user_id:
+            push_user_id = result_user_id
+        else:
+            cursor.execute("SELECT main_user_id  FROM bot_user_relation WHERE sub_user_id  = %s AND action_key = %s", (result,user_message,))
+            push_user_id = cursor.fetchone()
+        
+        if push_user_id != None:
+            print("第三個"+push_user_id[0])  # Kong
+            
+
     
     connection.commit()
     cursor.close()

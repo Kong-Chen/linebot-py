@@ -98,10 +98,11 @@ def handle_message(event):
                 cursor.execute("SELECT sub_user_id  FROM bot_user_relation WHERE main_user_id = %s AND action_key = %s" , (result,user_message,))
                 result_user_id = cursor.fetchone()
                 if result_user_id:
-                    push_user_id = result_user_id
+                    push_user_id = result_user_id[0]
                 else:
                     cursor.execute("SELECT main_user_id  FROM bot_user_relation WHERE sub_user_id  = %s AND action_key = %s", (result,user_message,))
-                    push_user_id = cursor.fetchone()
+                    result_user_id = cursor.fetchone()
+                    push_user_id = result_user_id[0]
         
             if push_user_id != None:
                 line_bot_api.reply_message(
