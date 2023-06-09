@@ -86,7 +86,9 @@ def handle_message(event):
             chat_rank = 1
         cursor = connection.cursor() 
         cursor.execute("INSERT INTO bot_chat (user_id, chat_rank, chat_message, chat_time) VALUES (%s, %s, %s, %s)", (user_id, chat_rank, user_message, timestamp)) 
-        # connection.commit() #爭議Kong
+        
+        connection.commit() #爭議Kong
+        cursor.close()
         
         # 特殊功能
         cursor = connection.cursor() 
@@ -141,12 +143,16 @@ def handle_message(event):
                     event.reply_token,
                     TextSendMessage(text="你的訊息對話有收到喔!push_user_id is not None and keyword is not None")
                 )
+            connection.commit()
+            cursor.close()
+
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text="你的訊息對話有收到喔!special_function")
         )
         connection.commit()
         cursor.close()
+        
 
     except psycopg2.Error as e:
         # print("資料庫錯誤:", e)
