@@ -60,7 +60,7 @@ def handle_message(event):
         profile = line_bot_api.get_profile(user_line_id)
         user_nickname = profile.display_name
 
-
+    
     try:
  
         cursor = connection.cursor()     
@@ -86,6 +86,28 @@ def handle_message(event):
         cursor.execute("INSERT INTO bot_chat (user_id, chat_rank, chat_message, chat_time) VALUES (%s, %s, %s, %s)", (user_id, chat_rank, user_message, timestamp)) 
 
         
+        # 特殊功能
+        special_function = True
+        push_user_id = None
+        if special_function == True:
+            #撈出使用者代碼
+            cursor.execute("SELECT user_id  FROM bot_user WHERE line_id = %s", (user_line_id,))
+            result = cursor.fetchone()
+
+            if result:
+                cursor.execute("SELECT sub_user_id  FROM bot_user_relation WHERE main_user_id = %s AND action_key = %s" , (result,user_message,))
+                result_user_id = cursor.fetchone()
+                if result_user_id:
+                    push_user_id = result_user_id
+                else:
+                    cursor.execute("SELECT main_user_id  FROM bot_user_relation WHERE sub_user_id  = %s AND action_key = %s", (result,user_message,))
+                    push_user_id = cursor.fetchone()
+        
+            if push_user_id:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=push_user_id)
+                )
 
         connection.commit()
         cursor.close()

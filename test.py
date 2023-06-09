@@ -42,6 +42,7 @@ try:
         user_id = new_id 
 
         #新增對話
+    
     cursor.execute("INSERT INTO bot_chat (user_id, chat_rank,chat_message,chat_time) VALUES (%s, %s, %s, %s)", (user_id,1,user_message,timestamp))
 
 
