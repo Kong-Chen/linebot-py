@@ -116,7 +116,7 @@ def handle_message(event):
                 #取出關係人對話  
                 cursor.execute("SELECT chat_message  FROM bot_chat WHERE user_id = %s AND chat_message <> %s AND is_read=false Order by chat_rank" , (push_user_id,user_message,))
                 result_chat_rows = cursor.fetchall()
-                result_chat_all = ""
+                result_chat_all = "尚未讀取對話："+"\n"
                 for result_chat_row in result_chat_rows:
                     result_chat_all += result_chat_row[0]+"\n"
 
