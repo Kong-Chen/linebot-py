@@ -87,7 +87,9 @@ def handle_message(event):
 
         
         # 特殊功能
-        special_function = False
+        cursor.execute("SELECT special_function FROM bot_parameter")
+        is_special_function = cursor.fetchone()
+        special_function = is_special_function[0]
         push_user_id = None
         push_user_line_id = None
         keyword = None
