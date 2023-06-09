@@ -141,12 +141,15 @@ def handle_message(event):
                     event.reply_token,
                     TextSendMessage(text="你的訊息對話有收到喔!push_user_id is not None and keyword is not None")
                 )
+            
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text="你的訊息對話有收到喔!special_function")
         )
-        cursor.close()
         connection.commit()
+        cursor.close()
+        
+        
   
 
     except psycopg2.Error as e:
