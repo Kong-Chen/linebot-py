@@ -77,18 +77,19 @@ def handle_message(event):
             user_id = new_id 
 
         #新增對話
+        #cursor = connection.cursor() 
         cursor.execute("SELECT MAX(chat_rank) FROM bot_chat WHERE user_id = %s", (user_id,))
         result = cursor.fetchone()
         if result and result[0]:
             chat_rank = result[0] + 1
         else:
             chat_rank = 1
+        #cursor = connection.cursor() 
         cursor.execute("INSERT INTO bot_chat (user_id, chat_rank, chat_message, chat_time) VALUES (%s, %s, %s, %s)", (user_id, chat_rank, user_message, timestamp)) 
-        
-        connection.commit() #爭議Kong
-        cursor.close()
+        #connection.commit() #爭議Kong
         
         # 特殊功能
+        #cursor = connection.cursor() 
         cursor.execute("SELECT special_function FROM bot_parameter")
         is_special_function = cursor.fetchone()
         special_function = is_special_function[0]
@@ -99,10 +100,12 @@ def handle_message(event):
 
         if special_function == True:
             #撈出使用者代碼
+            #cursor = connection.cursor() 
             cursor.execute("SELECT user_id  FROM bot_user WHERE line_id = %s", (user_line_id,))
             result = cursor.fetchone()
 
             if result:
+                #cursor = connection.cursor() 
                 cursor.execute("SELECT sub_user_id  FROM bot_user_relation WHERE main_user_id = %s AND action_key = %s" , (result,user_message,))
                 result_user_id = cursor.fetchone()
                 if result_user_id:
@@ -110,6 +113,7 @@ def handle_message(event):
                     keyword = user_message
 
                 else:
+                    #cursor = connection.cursor() 
                     cursor.execute("SELECT main_user_id  FROM bot_user_relation WHERE sub_user_id  = %s AND action_key = %s", (result,user_message,))
                     result_user_id = cursor.fetchone()
                     if result_user_id:
@@ -118,6 +122,7 @@ def handle_message(event):
         
             if push_user_id is not None and keyword is not None:
                 #取出關係人對話  
+                #cursor = connection.cursor() 
                 cursor.execute("SELECT chat_message  FROM bot_chat WHERE user_id = %s AND chat_message <> %s AND is_read=false Order by chat_rank" , (push_user_id,user_message,))
                 result_chat_rows = cursor.fetchall()
                 result_chat_all = "尚未讀取對話："+"\n"
@@ -136,16 +141,12 @@ def handle_message(event):
                     event.reply_token,
                     TextSendMessage(text="你的訊息對話有收到喔!push_user_id is not None and keyword is not None")
                 )
-            connection.commit()
-            cursor.close()
-
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text="你的訊息對話有收到喔!special_function")
         )
         connection.commit()
         cursor.close()
-        
 
     except psycopg2.Error as e:
         # print("資料庫錯誤:", e)
