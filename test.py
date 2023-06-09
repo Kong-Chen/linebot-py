@@ -21,8 +21,8 @@ try:
         sslmode="require"
     )
     timestamp = datetime.now()
-    user_message='123'
-    keyword='123'
+    user_message='繼續11'
+    keyword='繼續111'
     user_line_id='1111111'
     user_nickname='測試'
     user_id='111'
