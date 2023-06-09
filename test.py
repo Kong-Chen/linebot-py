@@ -23,8 +23,8 @@ try:
     timestamp = datetime.now()
     user_message='繼續'
     keyword='繼續'
-    user_line_id='Ud91537b73f965b281b99f822c9e3387e'
-    user_nickname='Kong'
+    user_line_id='1111111'
+    user_nickname='測試'
     user_id='111'
     cursor = connection.cursor()
 
@@ -53,7 +53,7 @@ try:
     if result:
         cursor.execute("SELECT sub_user_id  FROM bot_user_relation WHERE main_user_id = %s AND action_key = %s" , (result,user_message,))
         result_user_id = cursor.fetchone()
-        print("第二個" + result_user_id[0])  # Kong
+        #print("第二個" + result_user_id[0])  # Kong
         if result_user_id:
             push_user_id = result_user_id
         else:

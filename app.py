@@ -87,7 +87,7 @@ def handle_message(event):
 
         
         # 特殊功能
-        special_function = True
+        special_function = False
         push_user_id = None
         push_user_line_id = None
         keyword = None
@@ -133,6 +133,10 @@ def handle_message(event):
                     event.reply_token,
                     TextSendMessage(text="你的訊息對話有收到喔!")
                 )
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="你的訊息對話有收到喔!")
+        )
         connection.commit()
         cursor.close()
 
