@@ -89,6 +89,7 @@ def handle_message(event):
         # 特殊功能
         special_function = True
         push_user_id = None
+        result_user_id = None
         if special_function == True:
             #撈出使用者代碼
             cursor.execute("SELECT user_id  FROM bot_user WHERE line_id = %s", (user_line_id,))
@@ -102,7 +103,8 @@ def handle_message(event):
                 else:
                     cursor.execute("SELECT main_user_id  FROM bot_user_relation WHERE sub_user_id  = %s AND action_key = %s", (result,user_message,))
                     result_user_id = cursor.fetchone()
-                    push_user_id = result_user_id[0]
+                    if result_user_id:
+                        push_user_id = result_user_id[0]
         
             if push_user_id != None:
                 line_bot_api.reply_message(
