@@ -84,7 +84,7 @@ def handle_message(event):
         else:
             chat_rank = 1
         cursor.execute("INSERT INTO bot_chat (user_id, chat_rank, chat_message, chat_time) VALUES (%s, %s, %s, %s)", (user_id, chat_rank, user_message, timestamp)) 
-
+        connection.commit() #爭議Kong
         
         # 特殊功能
         cursor.execute("SELECT special_function FROM bot_parameter")
