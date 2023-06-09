@@ -89,7 +89,10 @@ def handle_message(event):
         # 特殊功能
         special_function = True
         push_user_id = None
+        push_user_line_id = None
+        keyword = None
         result_user_id = None
+
         if special_function == True:
             #撈出使用者代碼
             cursor.execute("SELECT user_id  FROM bot_user WHERE line_id = %s", (user_line_id,))
@@ -100,22 +103,35 @@ def handle_message(event):
                 result_user_id = cursor.fetchone()
                 if result_user_id:
                     push_user_id = result_user_id[0]
+                    keyword = user_message
+
                 else:
                     cursor.execute("SELECT main_user_id  FROM bot_user_relation WHERE sub_user_id  = %s AND action_key = %s", (result,user_message,))
                     result_user_id = cursor.fetchone()
                     if result_user_id:
                         push_user_id = result_user_id[0]
+                        keyword = user_message
         
-            if push_user_id != None:
+            if push_user_id is not None and keyword is not None:
+                #取出關係人對話  
+                cursor.execute("SELECT chat_message  FROM bot_chat WHERE user_id = %s AND chat_message <> %s AND is_read=false Order by chat_rank" , (push_user_id,user_message,))
+                result_chat_rows = cursor.fetchall()
+                result_chat_all = None
+                for result_chat_row in result_chat_rows:
+                    result_chat_all += result_chat_row+"\n"
+
+
+                #PUSH # 更新資料庫=1
+
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text=push_user_id)
+                    TextSendMessage(text=result_chat_all)
                 )
 
             else:
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text="正確寫入喔!!!!!!!!NEW")
+                    TextSendMessage(text="你的訊息對話有收到喔!")
                 )
         connection.commit()
         cursor.close()
