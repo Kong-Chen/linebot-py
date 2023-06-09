@@ -110,13 +110,13 @@ def handle_message(event):
                     TextSendMessage(text=push_user_id)
                 )
 
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="正確寫入喔!!!!!!!!NEW")
+            )
         connection.commit()
         cursor.close()
-
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="正確寫入喔!!!!!!!!NEW")
-        )
 
     except psycopg2.Error as e:
         # print("資料庫錯誤:", e)
