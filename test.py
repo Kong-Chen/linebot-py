@@ -22,6 +22,7 @@ try:
     )
     timestamp = datetime.now()
     user_message='繼續'
+    keyword='繼續'
     user_line_id='Ud91537b73f965b281b99f822c9e3387e'
     user_nickname='Kong'
     user_id='111'
@@ -59,8 +60,15 @@ try:
             cursor.execute("SELECT main_user_id  FROM bot_user_relation WHERE sub_user_id  = %s AND action_key = %s", (result,user_message,))
             push_user_id = cursor.fetchone()
         
-        if push_user_id != None:
-            print("第三個"+push_user_id[0])  # Kong
+        if push_user_id is not None and keyword is not None:
+            #取出關係人對話  
+            cursor.execute("SELECT chat_message  FROM bot_chat WHERE user_id = %s AND chat_message <> %s AND is_read=false Order by chat_rank" , (push_user_id,user_message,))
+            result_chat_rows = cursor.fetchall()
+            result_chat_all = None
+            result_chat_all = ""
+            for result_chat_row in result_chat_rows:
+                result_chat_all += result_chat_row[0]+"\n"
+            print (result_chat_all)
             
 
     
