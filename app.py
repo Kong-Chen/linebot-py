@@ -143,7 +143,10 @@ def handle_message(event):
                 )
             connection.commit()
             cursor.close()
-            
+        elif special_function == True:
+            special_function == False
+        else:
+            special_function == False
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text="你的訊息對話有收到喔!special_function")
