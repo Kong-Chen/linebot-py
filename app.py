@@ -90,9 +90,10 @@ def handle_message(event):
         
         # 特殊功能
         #cursor = connection.cursor() 
-        cursor.execute("SELECT special_function FROM bot_parameter")
+        cursor.execute("SELECT special_function,booking_function FROM bot_parameter")
         is_special_function = cursor.fetchone()
         special_function = is_special_function[0]
+        booking_function = is_special_function[1]
         push_user_id = None
         push_user_line_id = None
         keyword = None
@@ -143,14 +144,14 @@ def handle_message(event):
                 )
             connection.commit()
             cursor.close()
-        elif special_function == True:
-            special_function == False
+        elif booking_function == True:
+            ###訂位
+            booking_function == False
         else:
-            special_function == False
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="你的訊息對話有收到喔!special_function")
-        )
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="你的訊息對話有收到喔!special_function")
+            )
         
         
   
